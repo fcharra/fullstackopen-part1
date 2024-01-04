@@ -6,18 +6,22 @@ const Course = (props) => {
   )
 }
 
-const Content = (props) => {
+const Part = (props) => {
   return (
     <>
       <p>
-        {props.part1Name} {props.exercises1Count}
+        {props.partName} {props.exercisesCount}
       </p>
-      <p>
-        {props.part2Name} {props.exercises2Count}
-      </p>
-      <p>
-        {props.part3Name} {props.exercises3Count}
-      </p>
+    </>    
+  )
+}
+
+const Content = (props) => {
+  return (
+    <>
+      <Part partName={props.part1Name} exercisesCount={props.exercises1Count} />
+      <Part partName={props.part2Name} exercisesCount={props.exercises2Count} />
+      <Part partName={props.part3Name} exercisesCount={props.exercises3Count} />
     </>
   )
 }
