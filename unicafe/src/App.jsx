@@ -1,29 +1,36 @@
 import { useState } from 'react'
 
-const Button = ({handleClick, text}) => {
-  return (
+const Button = ({handleClick, text}) => (
     <button onClick={handleClick}>{text}</button>
-  )
-}
+)
 
-const FeedbackPanel = ({feedback, handleClicks}) =>
-  (
+const FeedbackPanel = ({feedback, handleClicks}) => (
     <div>
       <h2>give feedback</h2>
       <Button handleClick={() => handleClicks.good(feedback)} text="good" />
       <Button handleClick={() => handleClicks.neutral(feedback)} text="neutral" />
       <Button handleClick={() => handleClicks.bad(feedback)} text="bad" />
     </div>
-  )
-
-const StatisticsPanel = ({feedback}) => (
-  <div>
-    <h2>statistics</h2>
-    <p>good {feedback.good}</p>
-    <p>neutral {feedback.neutral}</p>
-    <p>bad {feedback.bad}</p>
-  </div>
 )
+
+const StatisticsPanel = ({feedback}) => {
+
+  const getVoteCount        = () => feedback.good + feedback.neutral + feedback.bad
+  const getVoteAverage      = () => ( feedback.good * 1 + feedback.neutral * 0 + feedback.bad * -1 ) / getVoteCount()
+  const getVotePercPositive = () => feedback.good * 100 / getVoteCount()
+
+  return (
+    <div>
+      <h2>statistics</h2>
+      <p>good {feedback.good}</p>
+      <p>neutral {feedback.neutral}</p>
+      <p>bad {feedback.bad}</p>
+      <p>all {getVoteCount()}</p>
+      <p>average {getVoteAverage()}</p>
+      <p>positive {getVotePercPositive()} % </p>
+    </div>
+  )
+}
 
 const App = () => {
   const [feedback, setFeedback] = useState({good: 0, neutral: 0, bad: 0})
