@@ -1,7 +1,12 @@
 import { useState } from 'react'
 
 const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
-const StatisticLine = ({text, value}) => <p>{text} {value}</p>
+const StatisticLine = ({text, value}) => (
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
+)
 
 const FeedbackPanel = ({feedback, handleClicks}) => (
   <div>
@@ -33,12 +38,16 @@ const StatisticsPanel = ({feedback}) => {
   return (
     <div>
       <h2>statistics</h2>
-      <StatisticLine text="good" value={feedback.good} />
-      <StatisticLine text="neutral" value={feedback.neutral} />
-      <StatisticLine text="bad" value={feedback.bad} />
-      <StatisticLine text="all" value={getVoteCount()} />
-      <StatisticLine text="average" value={getVoteAverage()} />
-      <StatisticLine text="positive" value={getVotePercPositive() + " %"} />
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={feedback.good} />
+          <StatisticLine text="neutral" value={feedback.neutral} />
+          <StatisticLine text="bad" value={feedback.bad} />
+          <StatisticLine text="all" value={getVoteCount()} />
+          <StatisticLine text="average" value={getVoteAverage()} />
+          <StatisticLine text="positive" value={getVotePercPositive() + " %"} />
+        </tbody>
+      </table>
     </div>
   )
 }
