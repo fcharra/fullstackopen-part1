@@ -1,7 +1,31 @@
 import { useState } from 'react'
 
 const Button = ({handlerClick, text}) => <button onClick={handlerClick}>{text}</button>
-const getRandomInteger = (top) => Math.floor(Math.random() * top)
+
+const AnecdoteDisplay = ({anecdote}) => (
+  <>
+    <p>{anecdote.text}</p>
+    <p>has {anecdote.votes} votes</p>
+  </>
+)
+
+const AnecdoteOfTheDayPanel = ({anecdote}) => {
+  return (
+    <>
+      <h2>Anecdote of the day</h2>
+      <AnecdoteDisplay anecdote={anecdote} />
+    </>
+  )
+}
+
+const AnecdoteMostVotedPanel = ({anecdote}) => {
+  return (
+    <>
+      <h2>Anecdote with most votes</h2>
+      <AnecdoteDisplay anecdote={anecdote} />
+    </>
+  )
+}
 
 const App = () => {
   // I chose to use an array of objects, since it made more sense to me semantically.
@@ -15,9 +39,13 @@ const App = () => {
     {votes: 0, text: 'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'},
     {votes: 0, text: 'The only way to go fast, is to go well.'}
   ])
+
+  const getRandomInteger = (top) => Math.floor(Math.random() * top)
    
   const [selected, setSelected] = useState(getRandomInteger(anecdotes.length))
+  
   const setNextAnecdote = () => setSelected(getRandomInteger(anecdotes.length))
+  
   const addVote = (index) => {
     // Since it's an array of objects, first it's necessary to get a copy of the whole array.
     let anecdotesCopy = [...anecdotes]
@@ -27,12 +55,18 @@ const App = () => {
     setAnecdotes(anecdotesCopy)
   }
 
+  // Using a higher order function to traverse the array and find the index of the anecdote with the most votes.
+  const getMostVotedIndex = () => anecdotes.reduce(
+    (acc, curr, idx) => curr.votes > acc.votes ? {index: idx, votes: curr.votes} : acc,
+    {index: 0, votes: 0}
+  ).index
+
   return (
     <div>
-      <p>{anecdotes[selected].text}</p>
-      <p>has {anecdotes[selected].votes} votes</p>
+      <AnecdoteOfTheDayPanel anecdote={anecdotes[selected]} />
       <Button handlerClick={() => addVote(selected)} text="vote" />
       <Button handlerClick={setNextAnecdote} text="next anecdote" />
+      <AnecdoteMostVotedPanel anecdote={anecdotes[getMostVotedIndex()]} />
     </div>
   )
 }
